@@ -237,6 +237,11 @@ sh_binary {
     src: "proprietary/vendor/bin/hw/motorola.hardware.camera.imgtuner.aidl-service",
     filename: "motorola.hardware.camera.imgtuner.aidl-service",
     vendor: true,
+    // installs to /vendor/etc/vintf/manifest/ and into the assembled device
+    // manifest. PRODUCT_COPY_FILES rejects VINTF metadata outright.
+    vintf_fragments: [
+        "proprietary/vendor/etc/vintf/manifest/motorola.hardware.camera.imgtuner.aidl.xml",
+    ],
 }
 
 sh_binary {
@@ -302,3 +307,142 @@ android_app_import {
     privileged: true,
     system_ext_specific: true,
 }
+
+// ---------------------------------------------------------------------------
+// Settings-provider resource overlays.
+// android_app_import only writes to app/ or priv-app/, and an RRO there is never
+// scanned, so they have to go through prebuilt_overlay -> <partition>/overlay.
+// ---------------------------------------------------------------------------
+prebuilt_overlay {
+    name: "MotoSettingsProviderOverlayDPPCamera",
+    owner: "motorola",
+    src: "proprietary/product/overlay/MotoSettingsProviderOverlayDPPCamera.apk",
+    filename: "MotoSettingsProviderOverlayDPPCamera.apk",
+    product_specific: true,
+}
+
+prebuilt_overlay {
+    name: "MotorolaSettingsProvider__fogos_g__auto_generated_rro_product",
+    owner: "motorola",
+    src: "proprietary/product/overlay/MotorolaSettingsProvider__fogos_g__auto_generated_rro_product.apk",
+    filename: "MotorolaSettingsProvider__fogos_g__auto_generated_rro_product.apk",
+    product_specific: true,
+}
+
+// ---------------------------------------------------------------------------
+// Shared libraries the two Moto apps and the imgtuner HAL load.
+// Names are prefixed because extract-utils already owns the natural names for
+// the /vendor copies, so `stem` restores the exact on-device filename.
+// ---------------------------------------------------------------------------
+cc_prebuilt_library_shared {
+    name: "motocamera_desktop_1_0",
+    owner: "motorola",
+    stem: "motorola.hardware.camera.desktop@1.0",
+    srcs: [
+        "proprietary/system_ext/lib64/motorola.hardware.camera.desktop@1.0.so",
+    ],
+    compile_multilib: "64",
+    strip: {
+        none: true,
+    },
+    system_ext_specific: true,
+}
+
+cc_prebuilt_library_shared {
+    name: "motocamera_desktop_2_0",
+    owner: "motorola",
+    stem: "motorola.hardware.camera.desktop@2.0",
+    srcs: [
+        "proprietary/system_ext/lib64/motorola.hardware.camera.desktop@2.0.so",
+    ],
+    compile_multilib: "64",
+    strip: {
+        none: true,
+    },
+    system_ext_specific: true,
+}
+
+cc_prebuilt_library_shared {
+    name: "motocamera_desktop_jni",
+    owner: "motorola",
+    stem: "libjni_helper.motocameradesktop",
+    srcs: [
+        "proprietary/system_ext/lib64/libjni_helper.motocameradesktop.so",
+    ],
+    compile_multilib: "64",
+    strip: {
+        none: true,
+    },
+    system_ext_specific: true,
+}
+
+cc_prebuilt_library_shared {
+    name: "motocamera_imgtuner_jni",
+    owner: "motorola",
+    stem: "libimgTuner_jni.motoimagetuner",
+    srcs: [
+        "proprietary/system_ext/lib64/libimgTuner_jni.motoimagetuner.so",
+    ],
+    compile_multilib: "64",
+    strip: {
+        none: true,
+    },
+    system_ext_specific: true,
+}
+
+cc_prebuilt_library_shared {
+    name: "motocamera_imgtuner_aidl",
+    owner: "motorola",
+    stem: "motorola.hardware.camera.imgtuner.aidl-V1-ndk",
+    srcs: [
+        "proprietary/system/lib64/motorola.hardware.camera.imgtuner.aidl-V1-ndk.so",
+    ],
+    compile_multilib: "64",
+    strip: {
+        none: true,
+    },
+}
+
+cc_prebuilt_library_shared {
+    name: "motocamera_imgtuner_1_0",
+    owner: "motorola",
+    stem: "motorola.hardware.camera.imgtuner@1.0",
+    srcs: [
+        "proprietary/vendor/lib64/motorola.hardware.camera.imgtuner@1.0.so",
+    ],
+    compile_multilib: "64",
+    strip: {
+        none: true,
+    },
+    vendor: true,
+}
+
+cc_prebuilt_library_shared {
+    name: "motocamera_imgtuner_aidl_platform",
+    owner: "motorola",
+    stem: "motorola.hardware.camera.imgtuner.aidl-V1-ndk_platform",
+    srcs: [
+        "proprietary/vendor/lib64/motorola.hardware.camera.imgtuner.aidl-V1-ndk_platform.so",
+    ],
+    compile_multilib: "64",
+    strip: {
+        none: true,
+    },
+    vendor: true,
+}
+
+cc_prebuilt_library_shared {
+    name: "motocamera_imgtuner_impl",
+    owner: "motorola",
+    stem: "motorola.hardware.camera.imgtuner@1.0-impl",
+    srcs: [
+        "proprietary/vendor/lib64/hw/motorola.hardware.camera.imgtuner@1.0-impl.so",
+    ],
+    compile_multilib: "64",
+    strip: {
+        none: true,
+    },
+    vendor: true,
+    relative_install_path: "hw",
+}
+

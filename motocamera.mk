@@ -90,7 +90,10 @@ PRODUCT_COPY_FILES += \
 ifeq ($(MOTOCAMERA_DESKTOP),true)
 
 PRODUCT_PACKAGES += \
-    MotCameraDesktop
+    MotCameraDesktop \
+    motocamera_desktop_1_0 \
+    motocamera_desktop_2_0 \
+    motocamera_desktop_jni
 
 PRODUCT_COPY_FILES += \
     $(MOTOCAMERA_PROPRIETARY)/system_ext/framework/com.motorola.hardware.camera.desktop.jar:$(TARGET_COPY_OUT_SYSTEM_EXT)/framework/com.motorola.hardware.camera.desktop.jar \
@@ -99,9 +102,6 @@ PRODUCT_COPY_FILES += \
     $(MOTOCAMERA_PROPRIETARY)/system_ext/etc/sysconfig/hiddenapi-whitelist-com.motorola.motcameradesktop.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/sysconfig/hiddenapi-whitelist-com.motorola.motcameradesktop.xml \
     $(MOTOCAMERA_PROPRIETARY)/system_ext/etc/public.libraries-motocameradesktop.txt:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/public.libraries-motocameradesktop.txt \
     $(MOTOCAMERA_PROPRIETARY)/system_ext/etc/enable-disable-packages/enable-disable-com.motorola.motcameradesktop.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/enable-disable-packages/enable-disable-com.motorola.motcameradesktop.xml \
-    $(MOTOCAMERA_PROPRIETARY)/system_ext/lib64/motorola.hardware.camera.desktop@1.0.so:$(TARGET_COPY_OUT_SYSTEM_EXT)/lib64/motorola.hardware.camera.desktop@1.0.so \
-    $(MOTOCAMERA_PROPRIETARY)/system_ext/lib64/motorola.hardware.camera.desktop@2.0.so:$(TARGET_COPY_OUT_SYSTEM_EXT)/lib64/motorola.hardware.camera.desktop@2.0.so \
-    $(MOTOCAMERA_PROPRIETARY)/system_ext/lib64/libjni_helper.motocameradesktop.so:$(TARGET_COPY_OUT_SYSTEM_EXT)/lib64/libjni_helper.motocameradesktop.so \
     $(MOTOCAMERA_PROPRIETARY)/product/etc/init/init.motcameradesktop.rc:$(TARGET_COPY_OUT_PRODUCT)/etc/init/init.motcameradesktop.rc
 
 endif
@@ -119,7 +119,12 @@ ifeq ($(MOTOCAMERA_IMAGERTUNING),true)
 PRODUCT_PACKAGES += \
     ImagerTuning-V \
     motocamera_imgtuner_aidl_service \
-    motocamera_imgtuner_hidl_service
+    motocamera_imgtuner_hidl_service \
+    motocamera_imgtuner_jni \
+    motocamera_imgtuner_aidl \
+    motocamera_imgtuner_1_0 \
+    motocamera_imgtuner_aidl_platform \
+    motocamera_imgtuner_impl
 
 PRODUCT_COPY_FILES += \
     $(MOTOCAMERA_PROPRIETARY)/system_ext/framework/com.motorola.libimgTuner.jar:$(TARGET_COPY_OUT_SYSTEM_EXT)/framework/com.motorola.libimgTuner.jar \
@@ -130,13 +135,7 @@ PRODUCT_COPY_FILES += \
     $(MOTOCAMERA_PROPRIETARY)/system_ext/etc/permissions/com.motorola.imagertuning.v.fogos.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/permissions/com.motorola.imagertuning.v.fogos.xml \
     $(MOTOCAMERA_PROPRIETARY)/system_ext/etc/permissions/privapp-permissions-com.motorola.imagertuning.v.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/permissions/privapp-permissions-com.motorola.imagertuning.v.xml \
     $(MOTOCAMERA_PROPRIETARY)/system_ext/etc/enable-disable-packages/enable-disable-com.motorola.imagertuning_u.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/enable-disable-packages/enable-disable-com.motorola.imagertuning_u.xml \
-    $(MOTOCAMERA_PROPRIETARY)/system_ext/lib64/libimgTuner_jni.motoimagetuner.so:$(TARGET_COPY_OUT_SYSTEM_EXT)/lib64/libimgTuner_jni.motoimagetuner.so \
-    $(MOTOCAMERA_PROPRIETARY)/system/lib64/motorola.hardware.camera.imgtuner.aidl-V1-ndk.so:$(TARGET_COPY_OUT_SYSTEM)/lib64/motorola.hardware.camera.imgtuner.aidl-V1-ndk.so \
-    $(MOTOCAMERA_PROPRIETARY)/vendor/lib64/motorola.hardware.camera.imgtuner@1.0.so:$(TARGET_COPY_OUT_VENDOR)/lib64/motorola.hardware.camera.imgtuner@1.0.so \
-    $(MOTOCAMERA_PROPRIETARY)/vendor/lib64/motorola.hardware.camera.imgtuner.aidl-V1-ndk_platform.so:$(TARGET_COPY_OUT_VENDOR)/lib64/motorola.hardware.camera.imgtuner.aidl-V1-ndk_platform.so \
-    $(MOTOCAMERA_PROPRIETARY)/vendor/lib64/hw/motorola.hardware.camera.imgtuner@1.0-impl.so:$(TARGET_COPY_OUT_VENDOR)/lib64/hw/motorola.hardware.camera.imgtuner@1.0-impl.so \
     $(MOTOCAMERA_PROPRIETARY)/vendor/etc/init/motorola.hardware.camera.imgtuner.aidl-service.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/motorola.hardware.camera.imgtuner.aidl-service.rc \
-    $(MOTOCAMERA_PROPRIETARY)/vendor/etc/init/motorola.hardware.camera.imgtuner@1.0-service.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/motorola.hardware.camera.imgtuner@1.0-service.rc \
-    $(MOTOCAMERA_PROPRIETARY)/vendor/etc/vintf/manifest/motorola.hardware.camera.imgtuner.aidl.xml:$(TARGET_COPY_OUT_VENDOR)/etc/vintf/manifest/motorola.hardware.camera.imgtuner.aidl.xml
+    $(MOTOCAMERA_PROPRIETARY)/vendor/etc/init/motorola.hardware.camera.imgtuner@1.0-service.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/motorola.hardware.camera.imgtuner@1.0-service.rc
 
 endif
