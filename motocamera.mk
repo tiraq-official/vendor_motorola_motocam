@@ -70,12 +70,10 @@ PRODUCT_COPY_FILES += \
 
 # ---------------------------------------------------------------------------
 # /system_ext: Moto settings/libraries the camera binds to
+# (androidx.window.extensions / .sidecar are NOT shipped here: the ROM already
+#  installs them into system_ext/framework, and every consumer declares them
+#  required="false".)
 # ---------------------------------------------------------------------------
-PRODUCT_COPY_FILES += \
-    $(MOTOCAMERA_PROPRIETARY)/system_ext/framework/androidx.window.extensions.jar:$(TARGET_COPY_OUT_SYSTEM_EXT)/framework/androidx.window.extensions.jar \
-    $(MOTOCAMERA_PROPRIETARY)/system_ext/framework/androidx.window.sidecar.jar:$(TARGET_COPY_OUT_SYSTEM_EXT)/framework/androidx.window.sidecar.jar \
-    $(MOTOCAMERA_PROPRIETARY)/system_ext/etc/permissions/androidx.window.extensions.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/permissions/androidx.window.extensions.xml \
-    $(MOTOCAMERA_PROPRIETARY)/system_ext/etc/permissions/androidx.window.sidecar.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/permissions/androidx.window.sidecar.xml
 
 # ---------------------------------------------------------------------------
 # /vendor: tuning data for the secondary rear sensor
