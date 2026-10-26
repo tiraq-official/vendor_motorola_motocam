@@ -37,7 +37,11 @@ PRODUCT_PACKAGES += \
     moto-settings \
     motsettings \
     libAncFaceDetect \
-    libancbase_fd
+    libancbase_fd \
+    MotoSignature2App \
+    CameraExtensionsProxy \
+    MotoSettingsProviderOverlayDPPCamera \
+    MotorolaSettingsProvider__fogos_g__auto_generated_rro_product
 
 # ---------------------------------------------------------------------------
 # /product configuration
@@ -54,9 +58,7 @@ PRODUCT_COPY_FILES += \
     $(MOTOCAMERA_PROPRIETARY)/product/etc/permissions/com.motorola.camera3.lens.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/com.motorola.camera3.lens.xml \
     $(MOTOCAMERA_PROPRIETARY)/product/etc/permissions/feature-com.motorola.motcameradesktop.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/feature-com.motorola.motcameradesktop.xml \
     $(MOTOCAMERA_PROPRIETARY)/product/etc/init/init.motcamera3.lens.rc:$(TARGET_COPY_OUT_PRODUCT)/etc/init/init.motcamera3.lens.rc \
-    $(MOTOCAMERA_PROPRIETARY)/product/etc/MotoDesktopAppConfig/com.motorola.camera3.desktop-config.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/MotoDesktopAppConfig/com.motorola.camera3.desktop-config.xml \
-    $(MOTOCAMERA_PROPRIETARY)/product/overlay/MotoSettingsProviderOverlayDPPCamera.apk:$(TARGET_COPY_OUT_PRODUCT)/overlay/MotoSettingsProviderOverlayDPPCamera.apk \
-    $(MOTOCAMERA_PROPRIETARY)/product/overlay/MotorolaSettingsProvider__fogos_g__auto_generated_rro_product.apk:$(TARGET_COPY_OUT_PRODUCT)/overlay/MotorolaSettingsProvider__fogos_g__auto_generated_rro_product.apk
+    $(MOTOCAMERA_PROPRIETARY)/product/etc/MotoDesktopAppConfig/com.motorola.camera3.desktop-config.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/MotoDesktopAppConfig/com.motorola.camera3.desktop-config.xml
 
 # ---------------------------------------------------------------------------
 # /system configuration + the second Moto signature app
@@ -64,9 +66,7 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(MOTOCAMERA_PROPRIETARY)/system/etc/permissions/moto-settings.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/moto-settings.xml \
     $(MOTOCAMERA_PROPRIETARY)/system/etc/permissions/moto-core_services.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/moto-core_services.xml \
-    $(MOTOCAMERA_PROPRIETARY)/system/etc/permissions/com.motorola.motosignature.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/com.motorola.motosignature.xml \
-    $(MOTOCAMERA_PROPRIETARY)/system/app/MotoSignature2App/MotoSignature2App.apk:$(TARGET_COPY_OUT_SYSTEM)/app/MotoSignature2App/MotoSignature2App.apk \
-    $(MOTOCAMERA_PROPRIETARY)/system/app/CameraExtensionsProxy/CameraExtensionsProxy.apk:$(TARGET_COPY_OUT_SYSTEM)/app/CameraExtensionsProxy/CameraExtensionsProxy.apk
+    $(MOTOCAMERA_PROPRIETARY)/system/etc/permissions/com.motorola.motosignature.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/com.motorola.motosignature.xml
 
 # ---------------------------------------------------------------------------
 # /system_ext: Moto settings/libraries the camera binds to
@@ -89,6 +89,9 @@ PRODUCT_COPY_FILES += \
 # ---------------------------------------------------------------------------
 ifeq ($(MOTOCAMERA_DESKTOP),true)
 
+PRODUCT_PACKAGES += \
+    MotCameraDesktop
+
 PRODUCT_COPY_FILES += \
     $(MOTOCAMERA_PROPRIETARY)/system_ext/framework/com.motorola.hardware.camera.desktop.jar:$(TARGET_COPY_OUT_SYSTEM_EXT)/framework/com.motorola.hardware.camera.desktop.jar \
     $(MOTOCAMERA_PROPRIETARY)/system_ext/etc/permissions/com.motorola.camera.desktop.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/permissions/com.motorola.camera.desktop.xml \
@@ -99,7 +102,6 @@ PRODUCT_COPY_FILES += \
     $(MOTOCAMERA_PROPRIETARY)/system_ext/lib64/motorola.hardware.camera.desktop@1.0.so:$(TARGET_COPY_OUT_SYSTEM_EXT)/lib64/motorola.hardware.camera.desktop@1.0.so \
     $(MOTOCAMERA_PROPRIETARY)/system_ext/lib64/motorola.hardware.camera.desktop@2.0.so:$(TARGET_COPY_OUT_SYSTEM_EXT)/lib64/motorola.hardware.camera.desktop@2.0.so \
     $(MOTOCAMERA_PROPRIETARY)/system_ext/lib64/libjni_helper.motocameradesktop.so:$(TARGET_COPY_OUT_SYSTEM_EXT)/lib64/libjni_helper.motocameradesktop.so \
-    $(MOTOCAMERA_PROPRIETARY)/system_ext/priv-app/MotCameraDesktop/MotCameraDesktop.apk:$(TARGET_COPY_OUT_SYSTEM_EXT)/priv-app/MotCameraDesktop/MotCameraDesktop.apk \
     $(MOTOCAMERA_PROPRIETARY)/product/etc/init/init.motcameradesktop.rc:$(TARGET_COPY_OUT_PRODUCT)/etc/init/init.motcameradesktop.rc
 
 endif
@@ -115,6 +117,7 @@ endif
 ifeq ($(MOTOCAMERA_IMAGERTUNING),true)
 
 PRODUCT_PACKAGES += \
+    ImagerTuning-V \
     motocamera_imgtuner_aidl_service \
     motocamera_imgtuner_hidl_service
 
@@ -128,7 +131,6 @@ PRODUCT_COPY_FILES += \
     $(MOTOCAMERA_PROPRIETARY)/system_ext/etc/permissions/privapp-permissions-com.motorola.imagertuning.v.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/permissions/privapp-permissions-com.motorola.imagertuning.v.xml \
     $(MOTOCAMERA_PROPRIETARY)/system_ext/etc/enable-disable-packages/enable-disable-com.motorola.imagertuning_u.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/enable-disable-packages/enable-disable-com.motorola.imagertuning_u.xml \
     $(MOTOCAMERA_PROPRIETARY)/system_ext/lib64/libimgTuner_jni.motoimagetuner.so:$(TARGET_COPY_OUT_SYSTEM_EXT)/lib64/libimgTuner_jni.motoimagetuner.so \
-    $(MOTOCAMERA_PROPRIETARY)/system_ext/priv-app/ImagerTuning-V/ImagerTuning-V.apk:$(TARGET_COPY_OUT_SYSTEM_EXT)/priv-app/ImagerTuning-V/ImagerTuning-V.apk \
     $(MOTOCAMERA_PROPRIETARY)/system/lib64/motorola.hardware.camera.imgtuner.aidl-V1-ndk.so:$(TARGET_COPY_OUT_SYSTEM)/lib64/motorola.hardware.camera.imgtuner.aidl-V1-ndk.so \
     $(MOTOCAMERA_PROPRIETARY)/vendor/lib64/motorola.hardware.camera.imgtuner@1.0.so:$(TARGET_COPY_OUT_VENDOR)/lib64/motorola.hardware.camera.imgtuner@1.0.so \
     $(MOTOCAMERA_PROPRIETARY)/vendor/lib64/motorola.hardware.camera.imgtuner.aidl-V1-ndk_platform.so:$(TARGET_COPY_OUT_VENDOR)/lib64/motorola.hardware.camera.imgtuner.aidl-V1-ndk_platform.so \
