@@ -1,46 +1,13 @@
-android_app_import {
-    name: "MotoSignatureApp",
-    owner: "motorola",
-    apk: "proprietary/system/app/MotoSignatureApp/MotoSignatureApp.apk",
-    preprocessed: true,
-    presigned: true,
-    dex_preopt: {
-        enabled: false,
-    },
-}
+//
+// Motorola camera stack for fogos (moto g34 5G) — full port
+//
+// Drop-in replacement for vendor/motorola/motocamera/Android.bp
+//
 
-android_app_import {
-    name: "MotCamera3AI",
-    owner: "motorola",
-    apk: "proprietary/product/app/MotCamera3AI/MotCamera3AI.apk",
-    preprocessed: true,
-    presigned: true,
-    dex_preopt: {
-        enabled: false,
-    },
-    product_specific: true,
-    required: [
-        "MotCamera3AI.odex",
-        "MotCamera3AI.vdex",
-    ],
-}
-
-prebuilt_etc {
-    name: "MotCamera3AI.odex",
-    src: "proprietary/product/app/MotCamera3AI/oat/arm64/MotCamera3AI.odex",
-    sub_dir: "app/MotCamera3AI/oat/arm64",
-    product_specific: true,
-    filename: "MotCamera3AI.odex",
-}
-
-prebuilt_etc {
-    name: "MotCamera3AI.vdex",
-    src: "proprietary/product/app/MotCamera3AI/oat/arm64/MotCamera3AI.vdex",
-    sub_dir: "app/MotCamera3AI/oat/arm64",
-    product_specific: true,
-    filename: "MotCamera3AI.vdex",
-}
-
+// ---------------------------------------------------------------------------
+// Main camera app  (com.motorola.camera3, MotCamera4.apk, v9.1.30.65)
+//   - stored in Git LFS: run `git lfs pull` or this build ships a 134 byte file
+// ---------------------------------------------------------------------------
 android_app_import {
     name: "MotCamera4",
     owner: "motorola",
@@ -64,6 +31,7 @@ android_app_import {
 
 prebuilt_etc {
     name: "MotCamera4.odex",
+    owner: "motorola",
     src: "proprietary/product/priv-app/MotCamera4/oat/arm64/MotCamera4.odex",
     sub_dir: "priv-app/MotCamera4/oat/arm64",
     product_specific: true,
@@ -72,42 +40,66 @@ prebuilt_etc {
 
 prebuilt_etc {
     name: "MotCamera4.vdex",
+    owner: "motorola",
     src: "proprietary/product/priv-app/MotCamera4/oat/arm64/MotCamera4.vdex",
     sub_dir: "priv-app/MotCamera4/oat/arm64",
     product_specific: true,
     filename: "MotCamera4.vdex",
 }
 
+// ---------------------------------------------------------------------------
+// AI content plugin  (com.motorola.camera3.content.ai)
+//   MotCamera4 requests com.motorola.camera3.content.ai.ACCESS from this app
+// ---------------------------------------------------------------------------
 android_app_import {
-    name: "MotorolaSettingsProvider",
+    name: "MotCamera3AI",
     owner: "motorola",
-    apk: "proprietary/system_ext/priv-app/MotorolaSettingsProvider/MotorolaSettingsProvider.apk",
-    certificate: "platform",
+    apk: "proprietary/product/app/MotCamera3AI/MotCamera3AI.apk",
+    preprocessed: true,
+    presigned: true,
     dex_preopt: {
         enabled: false,
     },
-    privileged: true,
-    system_ext_specific: true,
+    product_specific: true,
     required: [
-        "MotorolaSettingsProvider.odex",
-        "MotorolaSettingsProvider.vdex",
+        "MotCamera3AI.odex",
+        "MotCamera3AI.vdex",
     ],
 }
 
 prebuilt_etc {
-    name: "MotorolaSettingsProvider.odex",
-    src: "proprietary/system_ext/priv-app/MotorolaSettingsProvider/oat/arm64/MotorolaSettingsProvider.odex",
-    sub_dir: "priv-app/MotorolaSettingsProvider/oat/arm64",
-    system_ext_specific: true,
-    filename: "MotorolaSettingsProvider.odex",
+    name: "MotCamera3AI.odex",
+    owner: "motorola",
+    src: "proprietary/product/app/MotCamera3AI/oat/arm64/MotCamera3AI.odex",
+    sub_dir: "app/MotCamera3AI/oat/arm64",
+    product_specific: true,
+    filename: "MotCamera3AI.odex",
 }
 
 prebuilt_etc {
-    name: "MotorolaSettingsProvider.vdex",
-    src: "proprietary/system_ext/priv-app/MotorolaSettingsProvider/oat/arm64/MotorolaSettingsProvider.vdex",
-    sub_dir: "priv-app/MotorolaSettingsProvider/oat/arm64",
-    system_ext_specific: true,
-    filename: "MotorolaSettingsProvider.vdex",
+    name: "MotCamera3AI.vdex",
+    owner: "motorola",
+    src: "proprietary/product/app/MotCamera3AI/oat/arm64/MotCamera3AI.vdex",
+    sub_dir: "app/MotCamera3AI/oat/arm64",
+    product_specific: true,
+    filename: "MotCamera3AI.vdex",
+}
+
+// ---------------------------------------------------------------------------
+// Moto signature verification framework
+//   MotCamera4 declares <uses-library android:name="com.motorola.motosignature"
+//   android:required="true"> — this is the ONLY hard library dependency of the
+//   camera app, so it must always be present.
+// ---------------------------------------------------------------------------
+android_app_import {
+    name: "MotoSignatureApp",
+    owner: "motorola",
+    apk: "proprietary/system/app/MotoSignatureApp/MotoSignatureApp.apk",
+    preprocessed: true,
+    presigned: true,
+    dex_preopt: {
+        enabled: false,
+    },
 }
 
 dex_import {
@@ -134,6 +126,50 @@ dex_import {
     ],
 }
 
+// ---------------------------------------------------------------------------
+// Moto settings provider  (com.motorola.android.providers.settings)
+//   The stock APK runs with sharedUserId="android.uid.system", so it MUST be
+//   signed with the ROM's platform key.  certificate:"platform" makes Soong
+//   re-sign it — that is intentional and required.  Do not switch this to
+//   presigned:true, the app will not be able to run as android.uid.system.
+// ---------------------------------------------------------------------------
+android_app_import {
+    name: "MotorolaSettingsProvider",
+    owner: "motorola",
+    apk: "proprietary/system_ext/priv-app/MotorolaSettingsProvider/MotorolaSettingsProvider.apk",
+    certificate: "platform",
+    dex_preopt: {
+        enabled: false,
+    },
+    privileged: true,
+    system_ext_specific: true,
+    required: [
+        "MotorolaSettingsProvider.odex",
+        "MotorolaSettingsProvider.vdex",
+    ],
+}
+
+prebuilt_etc {
+    name: "MotorolaSettingsProvider.odex",
+    owner: "motorola",
+    src: "proprietary/system_ext/priv-app/MotorolaSettingsProvider/oat/arm64/MotorolaSettingsProvider.odex",
+    sub_dir: "priv-app/MotorolaSettingsProvider/oat/arm64",
+    system_ext_specific: true,
+    filename: "MotorolaSettingsProvider.odex",
+}
+
+prebuilt_etc {
+    name: "MotorolaSettingsProvider.vdex",
+    owner: "motorola",
+    src: "proprietary/system_ext/priv-app/MotorolaSettingsProvider/oat/arm64/MotorolaSettingsProvider.vdex",
+    sub_dir: "priv-app/MotorolaSettingsProvider/oat/arm64",
+    system_ext_specific: true,
+    filename: "MotorolaSettingsProvider.vdex",
+}
+
+// ---------------------------------------------------------------------------
+// motsettings command line tool
+// ---------------------------------------------------------------------------
 sh_binary {
     name: "motsettings",
     owner: "motorola",
@@ -142,6 +178,9 @@ sh_binary {
     system_ext_specific: true,
 }
 
+// ---------------------------------------------------------------------------
+// Motorola face detection / ANC libraries used by the camera HAL
+// ---------------------------------------------------------------------------
 cc_prebuilt_library_shared {
     name: "libAncFaceDetect",
     owner: "motorola",
@@ -163,7 +202,6 @@ cc_prebuilt_library_shared {
         },
     },
     compile_multilib: "64",
-    prefer: true,
     vendor: true,
 }
 
@@ -187,6 +225,24 @@ cc_prebuilt_library_shared {
         },
     },
     compile_multilib: "64",
-    prefer: true,
+    vendor: true,
+}
+
+// ---------------------------------------------------------------------------
+// Imager tuning HAL services (only pulled in when MOTOCAMERA_IMAGERTUNING=true)
+// ---------------------------------------------------------------------------
+sh_binary {
+    name: "motocamera_imgtuner_aidl_service",
+    owner: "motorola",
+    src: "proprietary/vendor/bin/hw/motorola.hardware.camera.imgtuner.aidl-service",
+    filename: "motorola.hardware.camera.imgtuner.aidl-service",
+    vendor: true,
+}
+
+sh_binary {
+    name: "motocamera_imgtuner_hidl_service",
+    owner: "motorola",
+    src: "proprietary/vendor/bin/hw/motorola.hardware.camera.imgtuner@1.0-service",
+    filename: "motorola.hardware.camera.imgtuner@1.0-service",
     vendor: true,
 }
